@@ -16,6 +16,7 @@ import React, { useCallback, useEffect, useState } from "react";
 
 
 import ColorPlugin from "./ColorPlugin";
+import ListPlugin from "./ListPlugin";
 
 export default function Toolbars() {
     const [editor] = useLexicalComposerContext();
@@ -173,6 +174,7 @@ export default function Toolbars() {
             </button>
             
             <ColorPlugin />
+            <ListPlugin />
         </div>
     );
 }

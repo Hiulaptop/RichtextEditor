@@ -8,12 +8,13 @@ import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
 import {ListNode, ListItemNode} from "@lexical/list"
 
-import theme from './Theme';
+import { theme } from "./Theme";
 import Toolbars from './ToolbarsPlugin';
 
 function onError(error: any) {
@@ -33,7 +34,7 @@ export default function Editor() {
     const editorStateJSON = editorState.toJSON();
     setEditorState(JSON.stringify(editorStateJSON));
 
-    console.log(editorStateJSON);
+    // console.log(editorStateJSON);
   }
 
   function MyOnChangePlugin(onChange: any) {
@@ -60,6 +61,7 @@ export default function Editor() {
           }
           ErrorBoundary={LexicalErrorBoundary}
         />
+        <ListPlugin />
         <HistoryPlugin />
         <AutoFocusPlugin />
         <MyOnChangePlugin onChange={onChangeState} />

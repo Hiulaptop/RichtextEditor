@@ -1,5 +1,5 @@
-
-export default {
+import { EditorThemeClasses } from "lexical";
+export const theme: EditorThemeClasses = {
     ltr: 'ltr',
     rtl: 'rtl',
     paragraph: 'editor-paragraph',
@@ -16,8 +16,8 @@ export default {
         nested: {
             listitem: 'editor-nested-listitem',
         },
-        ol: 'editor-list-ol',
-        ul: 'editor-list-ul',
+        ol: 'list-decimal px-8',
+        ul: 'list-disc px-8',
         listitem: 'editor-listItem',
         listitemChecked: 'editor-listItemChecked',
         listitemUnchecked: 'editor-listItemUnchecked',

@@ -20,12 +20,12 @@ export default function ColorPicker({ color, onChange, Icon }: ColorPickerProps)
                 setIsOpen(false);
             }
         };
-
-        window.addEventListener("mousedown", handleOutSideClick);
-
-        return () => {
-            window.removeEventListener("mousedown", handleOutSideClick);
-        };
+        if(ref){
+            window.addEventListener("mousedown", handleOutSideClick);
+            return () => {
+                window.removeEventListener("mousedown", handleOutSideClick);
+            };
+        }
     }, [ref]);
 
     return (
@@ -39,7 +39,7 @@ export default function ColorPicker({ color, onChange, Icon }: ColorPickerProps)
             {isOpen &&
                 <SketchPicker
                     color={color}
-                    onChangeComplete={(color) => onChange(color.hex)}
+                    onChange={(color) => onChange(color.hex)}
                     className="absolute top-8 z-10 select-none"
                 />
             }
