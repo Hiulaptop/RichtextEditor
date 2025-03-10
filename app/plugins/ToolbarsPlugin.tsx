@@ -1,5 +1,5 @@
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { mergeRegister } from '@lexical/utils';
+import { mergeRegister, $getNearestNodeOfType } from '@lexical/utils';
 import {
     $getSelection,
     $isRangeSelection,
@@ -11,12 +11,15 @@ import {
     SELECTION_CHANGE_COMMAND,
     UNDO_COMMAND
 } from "lexical";
-import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, Italic, Redo, Strikethrough, Underline, Undo } from "lucide-react";
+import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, Italic, PartyPopper, Redo, Strikethrough, Underline, Undo } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
+import { $isListNode, ListNode } from "@lexical/list";
 
 
 import ColorPlugin from "./ColorPlugin";
 import ListPlugin from "./ListPlugin";
+import ImagePlugin from "./ImagePlugin";
+import YoutubePlugin from "./YoutubePlugin";
 
 export default function Toolbars() {
     const [editor] = useLexicalComposerContext();
@@ -27,6 +30,7 @@ export default function Toolbars() {
     const [isItalic, setIsItalic] = useState(false);
     const [isUnderline, setIsUnderline] = useState(false);
     const [isStrikethrough, setIsStrikethrough] = useState(false);
+    const [blockType, setBlockType] = useState('paragraph');
 
     const $updateToolbar = useCallback(() => {
         const selection = $getSelection();
@@ -35,7 +39,22 @@ export default function Toolbars() {
             setIsItalic(selection.hasFormat('italic'));
             setIsUnderline(selection.hasFormat('underline'));
             setIsStrikethrough(selection.hasFormat('strikethrough'));
-        }
+            const anchorNode = selection.anchor.getNode();
+            const element = anchorNode.getKey() === 'root' ? anchorNode : anchorNode.getTopLevelElementOrThrow();
+            const elementKey = element.getKey();
+            const elementDom = editor.getElementByKey(elementKey);
+            
+            if (!elementDom) return;
+
+            if ($isListNode(element)){
+                const parentList = $getNearestNodeOfType(anchorNode, ListNode);
+                const type = parentList ? parentList.getTag() : element.getTag();
+                setBlockType(type);
+            }
+        };
+
+
+
     }, []);
 
     useEffect(() => {
@@ -71,6 +90,7 @@ export default function Toolbars() {
             ),
         );
     }, [editor, $updateToolbar]);
+
 
     return (
         <div id="toolbar" className="flex flex-row h-12 py-1 gap-1 border-b-1 rounded-t-xl bg-gray-100">
@@ -174,7 +194,9 @@ export default function Toolbars() {
             </button>
             
             <ColorPlugin />
-            <ListPlugin />
+            <ListPlugin blockType = {blockType} />
+            <ImagePlugin />
+            <YoutubePlugin />
         </div>
     );
 }

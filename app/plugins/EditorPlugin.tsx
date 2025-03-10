@@ -17,6 +17,9 @@ import {ListNode, ListItemNode} from "@lexical/list"
 import { theme } from "./Theme";
 import Toolbars from './ToolbarsPlugin';
 
+import { ImageNode } from "../nodes/ImageNode";
+import { YoutubeNode } from "../nodes/YoutubeNode";
+
 function onError(error: any) {
   console.error(error);
 }
@@ -26,7 +29,11 @@ export default function Editor() {
     namespace: 'PostEditor',
     theme: theme,
     onError,
-    nodes: [ListNode, ListItemNode],
+    nodes: [ListNode, 
+      ListItemNode,
+      ImageNode,
+      YoutubeNode,
+    ],
   };
 
   const [editorState, setEditorState] = useState<any>();
